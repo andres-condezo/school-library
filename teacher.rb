@@ -1,4 +1,7 @@
 # Teacher: A class to define attributes and behaviors of the teacher class.
+
+require './person'
+
 class Teacher < Person
   # Constructor to initialize
   def initialize(age, name, parent_permission, specialization)
