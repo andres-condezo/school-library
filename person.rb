@@ -3,7 +3,7 @@ require './decorators'
 
 class Person < Nameable
   # accessor get and set method
-  attr_accessor :name, :age
+  attr_accessor :name, :age, :rentals
   attr_reader :id
 
   # Constructor to initialize the class Person
@@ -13,10 +13,16 @@ class Person < Nameable
     @name = name
     @age = age
     @parent_permission = parent_permission
+    @rentals = []
   end
 
   def correct_name
     @name
+  end
+
+  def add_rental(book)
+    @rentals.push(book)
+    book.rentals = self
   end
 
   def can_use_services?
