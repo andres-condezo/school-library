@@ -47,24 +47,24 @@ class App
   end
 
   def create_student
-    puts 'Age: '
+    print 'Age: '
     age = gets.chomp
-    puts 'Name: '
+    print 'Name: '
     name = gets.chomp
-    puts 'Has parent permission [Y/N]: '
+    print 'Has parent permission [Y/N]: '
     parent_permission = gets.chomp
-    puts 'Classroom: '
+    print 'Classroom: '
     classroom = gets.chomp
     @people << Student.new(age, name, parent_permission, classroom)
     puts 'Person Created succesfully'
   end
 
   def create_teacher
-    puts 'Age: '
+    print 'Age: '
     age = gets.chomp
-    puts 'Name: '
+    print 'Name: '
     name = gets.chomp
-    puts 'Specialization: '
+    print 'Specialization: '
     specialization = gets.chomp
     @people << Teacher.new(age, name, specialization)
     puts 'Person created succesfully'
@@ -93,7 +93,7 @@ class App
       person = @people[gets.chomp.to_i]
       print 'Date: (yyyy-mm-dd)'
       date = gets.chomp
-      @rentals.push(Rental.new(date, book, person))
+      @rentals.push(Rental.new(date, person, book))
       puts 'Rental created succesfully'
     end
   end
@@ -104,10 +104,12 @@ class App
     else
       print 'ID of person: '
       id = gets.chomp.to_i
-      puts 'Rental:'
       @people.each do |person|
         if person.id == id
-          person.rentals.each { |rental| puts "Date: #{rental.date} Book: \"\" by #{rental.book.author}" }
+          puts "#{person.name} rentals:"
+          person.rentals.each do |rental|
+            puts "Date: #{rental.date} Book: \"#{rental.book.title}\" by #{rental.book.author}"
+          end
           break
         else
           puts 'There are no rentals for that id'
