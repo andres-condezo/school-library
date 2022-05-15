@@ -1,14 +1,15 @@
 class Rental
   # accessor get and set method
-  attr_accessor :date
-  attr_reader :book, :person
+  attr_accessor :date, :person, :book
 
   # Constructor to initialize the class Person
-  def initialize(date, book, person)
+  def initialize(date, person, book)
     @date = date
-    @book = book
-    book.rentals << self
+
     @person = person
-    person.rentals << self
+    person.rental << self
+
+    @book = book
+    book.rental << self
   end
 end
