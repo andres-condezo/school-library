@@ -4,8 +4,8 @@ require './rental'
 
 class Person < Nameable
   # accessor get and set method
-  attr_accessor :name, :age, :rental
-  attr_reader :id
+  attr_accessor :name, :age, :parent_permission
+  attr_reader :id, :rentals
 
   # Constructor to initialize the class Person
   def initialize(age, name = 'Unknown', parent_permission = 'true')
@@ -14,14 +14,16 @@ class Person < Nameable
     @name = name
     @age = age
     @parent_permission = parent_permission
-    @rental = []
+    @rentals = []
   end
 
   def correct_name
     @name
   end
 
-  def add_rental(date, book)
+  def add_rental(_date, book)
+    # @rentals.push(book)
+    # book.rentals = self
     Rental.new(date, self, book)
   end
 

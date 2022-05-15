@@ -3,6 +3,9 @@
 require './person'
 
 class Teacher < Person
+  # accessor get and set method
+  attr_accessor :specialization
+
   # Constructor to initialize
   def initialize(age, name, parent_permission, specialization)
     super(age, name, parent_permission)

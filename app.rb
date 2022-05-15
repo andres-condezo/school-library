@@ -5,30 +5,30 @@ require './teacher'
 require './rental'
 
 class App
-  attr_reader :books, :persons, :rentals
+  attr_reader :books, :people, :rentals
 
   def initialize
     @books = []
-    @persons = []
+    @people = []
     @rentals = []
   end
 
   def list_all_books
-    if @books.empty?
+    if @books.length.zero?
       puts 'No books found'
     else
       @books.each_with_index do |book, index|
-        puts "#{index}) Title: #{book.title}, Author: #{book.author}"
+        puts "#{index}) Title:\"#{book.title}\", Author:#{book.author}"
       end
     end
   end
 
   def list_all_people
-    if @persons.empty?
-      puts 'No Persons Found'
+    if @people.length.zero?
+      puts 'No poeple found'
     else
-      @persons.each_with_index do |person, index|
-        puts "#{index}) [#{person.class}], Name: #{person.name} ID: #{person.id}, Age: #{person.age} "
+      @people.each_with_index do |person, index|
+        puts "#{index}) [#{person.class}], Name:#{person.name} ID:#{person.id}, Age:#{person.age}"
       end
     end
   end
@@ -55,7 +55,7 @@ class App
     parent_permission = gets.chomp
     puts 'Classroom: '
     classroom = gets.chomp
-    @persons << Student.new(age, name, parent_permission, classroom)
+    @people << Student.new(age, name, parent_permission, classroom)
     puts 'Person Created succesfully'
   end
 
@@ -66,8 +66,8 @@ class App
     name = gets.chomp
     puts 'Specialization: '
     specialization = gets.chomp
-    @persons << Teacher.new(age, name, specialization)
-    puts 'Person Created succesfully'
+    @people << Teacher.new(age, name, specialization)
+    puts 'Person created succesfully'
   end
 
   def create_a_book
@@ -80,28 +80,39 @@ class App
   end
 
   def create_a_rental
-    puts 'Select a person from the following list by serial number'
-    list_all_books
-    selected_book = @books[gets.chomp.to_i]
-    list_all_people
-    selected_person = @persons[gets.chomp.to_i]
-    print 'Date: '
-    date = gets.chomp
-    @rentals << selected_person.add_rental(date, selected_book)
-    puts 'Rental created succesfully'
+    if @books.length.zero?
+      puts 'No books found.'
+    elsif @people.length.zero?
+      puts 'No people found.'
+    else
+      puts 'Select a book from the following list by number:'
+      list_all_books
+      book = @books[gets.chomp.to_i]
+      puts 'Select a person from the following list by number: (not id)'
+      list_all_people
+      person = @people[gets.chomp.to_i]
+      print 'Date: (yyyy-mm-dd)'
+      date = gets.chomp
+      @rentals.push(Rental.new(date, book, person))
+      puts 'Rental created succesfully'
+    end
   end
 
   def list_all_rentals
-    print 'Id of person: '
-    id = gets.chomp.to_i
-    person_details = @persons.find { |person| person.id == id }
-    if person_details
-      puts 'Rentals:'
-      person_details.rental.each_with_index do |rental, index|
-        puts "#{index + 1}) #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
-      end
+    if @rentals.length.zero?
+      puts 'There is no rentals to show'
     else
-      puts 'No Rentals Found'
+      print 'ID of person: '
+      id = gets.chomp.to_i
+      puts 'Rental:'
+      @people.each do |person|
+        if person.id == id
+          person.rentals.each { |rental| puts "Date: #{rental.date} Book: \"\" by #{rental.book.author}" }
+          break
+        else
+          puts 'There are no rentals for that id'
+        end
+      end
     end
   end
 end

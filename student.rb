@@ -4,7 +4,7 @@ require './person'
 
 class Student < Person
   # accessor get and set method
-  attr_reader :classroom
+  attr_accessor :classroom
 
   # Constructor to initialize
   def initialize(age, name, parent_permission, classroom)
