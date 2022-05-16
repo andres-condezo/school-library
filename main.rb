@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+#
 require './app'
 
 @main_menu_options = [
