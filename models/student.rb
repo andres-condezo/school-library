@@ -1,6 +1,6 @@
 # Student: A class to define attributes and behaviors of the student class.
 
-require './person'
+require_relative 'person'
 
 class Student < Person
   # accessor get and set method
