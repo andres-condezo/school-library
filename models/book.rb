@@ -1,4 +1,4 @@
-require './rental'
+require_relative 'rental'
 
 class Book
   # accessor get and set method

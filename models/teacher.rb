@@ -1,6 +1,6 @@
 # Teacher: A class to define attributes and behaviors of the teacher class.
 
-require './person'
+require_relative 'person'
 
 class Teacher < Person
   # accessor get and set method

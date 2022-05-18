@@ -1,6 +1,6 @@
 # Person: A class to define attributes and behaviors
-require './decorators'
-require './rental'
+require_relative 'decorators'
+require_relative 'rental'
 
 class Person < Nameable
   # accessor get and set method
