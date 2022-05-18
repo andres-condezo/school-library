@@ -1,8 +1,9 @@
-require './book'
-require './person'
-require './student'
-require './teacher'
-require './rental'
+require './models/book'
+require './models/person'
+require './models/student'
+require './models/teacher'
+require './models/rental'
+require './models/menu'
 
 class App
   attr_reader :books, :people, :rentals
@@ -11,11 +12,16 @@ class App
     @books = []
     @people = []
     @rentals = []
+    @main_menu = MainMenu.new
+  end
+
+  def say_hi
+    puts 'hi'
   end
 
   def list_all_books
     if @books.length.zero?
-      puts 'No books found'
+      puts '>> No books found'
     else
       @books.each_with_index do |book, index|
         puts "#{index}) Title:\"#{book.title}\", Author:#{book.author}"
@@ -25,7 +31,7 @@ class App
 
   def list_all_people
     if @people.length.zero?
-      puts 'No poeple found'
+      puts '>> No poeple found'
     else
       @people.each_with_index do |person, index|
         puts "#{index}) [#{person.class}], Name:#{person.name} ID:#{person.id}, Age:#{person.age}"
@@ -34,6 +40,7 @@ class App
   end
 
   def create_a_person
+    print_header
     puts 'Do you want to create a student (1) or a teacher (2)? [input the number]'
     selected_person = gets.chomp
     case selected_person
@@ -42,6 +49,7 @@ class App
     when '2'
       create_teacher
     else
+      @main_menu.print_menu
       puts 'Invalid selection'
     end
   end
@@ -56,7 +64,8 @@ class App
     print 'Classroom: '
     classroom = gets.chomp
     @people << Student.new(age, name, parent_permission, classroom)
-    puts 'Person Created succesfully'
+    @main_menu.print_menu
+    puts '>> Person Created succesfully'
   end
 
   def create_teacher
@@ -67,7 +76,8 @@ class App
     print 'Specialization: '
     specialization = gets.chomp
     @people << Teacher.new(age, name, specialization)
-    puts 'Person created succesfully'
+    @main_menu.print_menu
+    puts '>> Person created succesfully'
   end
 
   def create_a_book
@@ -76,14 +86,15 @@ class App
     print 'Author: '
     author = gets.chomp
     @books << Book.new(title, author)
-    puts 'Book created succesfully'
+    @main_menu.print_menu
+    puts '>> Book created succesfully'
   end
 
   def create_a_rental
     if @books.length.zero?
-      puts 'No books found.'
+      puts '>> No books found.'
     elsif @people.length.zero?
-      puts 'No people found.'
+      puts '>> No people found.'
     else
       puts 'Select a book from the following list by number:'
       list_all_books
@@ -93,28 +104,30 @@ class App
       person = @people[gets.chomp.to_i]
       print 'Date: (yyyy-mm-dd)'
       date = gets.chomp
-      @rentals.push(Rental.new(date, person, book))
-      puts 'Rental created succesfully'
+      @rentals << Rental.new(date, person, book)
+      @main_menu.print_menu
+      puts '>> Rental created succesfully'
     end
   end
 
   def list_all_rentals
     if @rentals.length.zero?
-      puts 'There is no rentals to show'
+      puts '>> There is no rentals to show'
     else
       print 'ID of person: '
       id = gets.chomp.to_i
-      @people.each do |person|
-        if person.id == id
-          puts "#{person.name} rentals:"
-          person.rentals.each do |rental|
-            puts "Date: #{rental.date} Book: \"#{rental.book.title}\" by #{rental.book.author}"
-          end
-          break
-        else
-          puts 'There are no rentals for that id'
+      puts ">> rentals for id:#{id} :"
+      puts "\n"
+      @rentals.each_with_index do |rental, index|
+        if rental.person.id == id
+          puts "#{index}) Date: #{rental.date} Book: \"#{rental.book.title}\" by #{rental.book.author}"
         end
       end
     end
+  end
+
+  def run(user_input)
+    @main_menu.print_menu
+    send(user_input)
   end
 end
