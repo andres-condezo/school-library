@@ -7,6 +7,7 @@ def print_header
   clear
   puts 'Welcome to School library App!'
   puts '-------------------------------'
+  puts "\n"
 end
 
 def print_div
