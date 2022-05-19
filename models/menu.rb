@@ -11,28 +11,9 @@ class MainMenu
     ]
   end
 
-  def valid_input?(input, menu_options)
-    valid_options = menu_options.map { |option| option[:value] }
-    valid_options.include?(input)
-  end
-
-  def receive_valid_input
-    # print_menu("\> please select a option", @main_menu_options)
-    input = gets.chomp
-    loop do
-      break if valid_input?(input, @main_menu_options)
-
-      print_menu
-      puts ">> \"#{input}\" was invalid please enter a valid number"
-      input = gets.chomp
-    end
-    input = input.to_i
-    @main_menu_options[input - 1][:method]
-  end
-
   def print_menu
     print_header
-    title = "\> please select a option"
+    title = '> Please select a option'
     puts title
     puts "\n"
     @main_menu_options.each do |option|
@@ -40,5 +21,24 @@ class MainMenu
     end
     puts "\n"
     print_div
+  end
+
+  def valid_input?(input, menu_options)
+    valid_options = menu_options.map { |option| option[:value] }
+    valid_options.include?(input)
+  end
+
+  def receive_valid_input
+    input = gets.chomp
+    loop do
+      break if valid_input?(input, @main_menu_options)
+
+      print_menu
+      puts ">> \"#{input}\" was invalid."
+      puts '>> Please enter a valid number:'
+      input = gets.chomp
+    end
+    index = input.to_i - 1
+    @main_menu_options[index][:method]
   end
 end
