@@ -17,6 +17,7 @@ def main
   end
   print_div
   puts 'Thank you for using this app!'
+  app.save_data
 end
 
 main
